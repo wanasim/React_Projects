@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title></title>
+      <script type="text/javascript" src="node_modules/react/dist/react.js"></script>
+      <script src="node_modules/react-dom/dist/react-dom.js"></script>
+   </head>
+   <body>
+      <div id="app">
+
+      </div>
+      <script type="text/javascript">
+         // console.log(React);
+         // console.log(ReactDOM);
+
+         const myButton = React.createElement("button",null, "Click Me" )
+         console.log(myButton)
+         console.log("stringifying", JSON.stringify(myButton))
+
+         //utilize 'render' method to render
+         ReactDOM.render(myButton, document.getElementById("app"));
+      </script>
+   </body>
+</html>

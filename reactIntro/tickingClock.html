@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title></title>
+      <script type="text/javascript" src="node_modules/react/dist/react.js"></script>
+      <script src="node_modules/react-dom/dist/react-dom.js"></script>
+   </head>
+   <body>
+      <div id="app">
+
+      </div>
+      <div id="reactway">
+
+      </div>
+      <script type="text/javascript">
+      var appDiv = document.getElementById('app')
+
+      function getDate(){
+         appDiv.innerHTML = ""
+         var date = new Date();
+         // console.log(date.toLocaleTimeString());
+         var newDate = date.toLocaleTimeString()
+         appDiv.append("Current Time is ", newDate)
+      }
+      setInterval(getDate, 1000)
+
+      // React Way...having trouble incoroporating clock in createElement method
+      var bob ="something", new Date().toLocaleTimeString()
+      const myDate = React.createElement("span",null, bob)
+      ReactDOM.render(myDate, document.getElementById("reactway"));
+      function newDate2(){
+
+         var reactDiv = document.getElementById("reactway")
+         reactDiv.innerHTML="Current time is", new Date().toLocaleTimeString()
+      }
+
+      setInterval(newDate2, 1000)
+      </script>
+   </body>
+</html>
