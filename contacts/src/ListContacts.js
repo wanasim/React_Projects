@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import escapeRegExp from 'escape-string-regexp'
+import sortBy from 'sort-by'
 
 // stateless functional component example:
 // function ListContacts(props){
@@ -46,21 +48,52 @@ class ListContacts extends React.Component {
       console.log(event)
       this.setState({query:event.target.value.trim()})
    }
+   clearQuery = () => {
+      this.setState({
+         query:''
+      })
+   }
 
    render() {
+      // object deconstructuring
+      const { contacts, onDeleteContact} = this.props;
+      const {query} = this.state;
+
       console.log('Props', this.props)
+      let showingContacts
+      if (query){
+         // escapeRegExp gets rid of special characters and 'i' ignores caps
+         const match = new RegExp(escapeRegExp(query), 'i');
+         showingContacts = contacts.filter((contact) => match.test(contact.name))
+      } else{
+         showingContacts = contacts
+      }
+
+      console.log("currently shown contacts", showingContacts)
+      showingContacts.sort(sortBy('name'))
       return (
          <div className= 'list-contacts'>
          {JSON.stringify(this.state)}
-            <input
-               className='search-contacts'
-               type = 'text'
-               placeholder = 'Search contacts'
-               value={this.state.query}
-               onChange={(event) => this.updateQuery(event)}
-            />
+            <div className= 'list-contacts-top'>
+
+               <input
+                  className='search-contacts'
+                  type = 'text'
+                  placeholder = 'Search contacts'
+                  value={query}
+                  onChange={(event) => this.updateQuery(event)}
+               />
+            </div>
+
+            {showingContacts.length !== contacts.length && (
+               <div className='showingContacts'>
+                  <span> Now showing {showingContacts.length} of {contacts.length} total </span>
+                  <button onClick={this.clearQuery}> Show all </button>
+               </div>
+            )}
+
             <ol className = 'contact-list'>
-               {this.props.contacts.map( contact =>
+               {showingContacts.map( contact =>
                   <li key={contact.id} className= 'contact-list-item'>
                      <div className='contact-avatar' style={{backgroundImage:`url(${contact.avatarURL})`}}>
                      </div>
@@ -68,7 +101,7 @@ class ListContacts extends React.Component {
                         <p>{contact.name}</p>
                         <p>{contact.email}</p>
                      </div>
-                     <button onClick={() => this.props.onDeleteContact(contact)} className='contact-remove'>
+                     <button onClick={() => onDeleteContact(contact)} className='contact-remove'>
                      Remove
                      </button>
                   </li>
