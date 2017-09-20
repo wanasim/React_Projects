@@ -1,40 +1,29 @@
 import React, { Component } from 'react'
 import ListContacts from './ListContacts'
+import * as ContactsAPI from './utils/ContactsAPI'
 
 
 // here we are passing the ListContacts Component a prop (aka argument) with contacts array
 class App extends Component {
    state = {
-      contacts: [
-        {
-          "id": "ryan",
-          "name": "Ryan Florence",
-          "email": "ryan@reacttraining.com",
-          "avatarURL": "http://localhost:5001/ryan.jpg"
-        },
-        {
-          "id": "michael",
-          "name": "Michael Jackson",
-          "email": "michael@reacttraining.com",
-          "avatarURL": "http://localhost:5001/michael.jpg"
-        },
-        {
-          "id": "tyler",
-          "name": "Tyler McGinnis",
-          "email": "tyler@reacttraining.com",
-          "avatarURL": "http://localhost:5001/tyler.jpg"
-        }
-      ]
+      contacts: []
    }
-      removeContact = (contact) => {
-         this.setState((state) => ({
-            console2: console.log("before deleting contact", state.contacts),
-            console: console.log("Deleted contact", contact),
-            contacts: state.contacts.filter((c) =>c.id !== contact.id ),
-            console3: console.log("after deleting contact", state.contacts)
+   componentDidMount(){
+      ContactsAPI.getAll().then((contacts) => {
+         this.setState({contacts})
+         // note that you can write the above as this.setState({contacts:contacts}) but if the key and value are the same then you can simplify it as such
+      })
+   }
 
-         }))
-      }
+   removeContact = (contact) => {
+      this.setState((state) => ({
+         console2: console.log("before deleting contact", state.contacts),
+         console: console.log("Deleted contact", contact),
+         contacts: state.contacts.filter((c) =>c.id !== contact.id ),
+         console3: console.log("after deleting contact", state.contacts)
+
+      }))
+   }
 
   render() {
     return (
