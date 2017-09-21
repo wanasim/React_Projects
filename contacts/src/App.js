@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import ListContacts from './ListContacts'
 import * as ContactsAPI from './utils/ContactsAPI'
-
+import CreateContact from './CreateContact'
 
 // here we are passing the ListContacts Component a prop (aka argument) with contacts array
 class App extends Component {
    state = {
+      screen: 'create',
       contacts: []
    }
    componentDidMount(){
@@ -23,13 +24,22 @@ class App extends Component {
          console3: console.log("after deleting contact", state.contacts)
 
       }))
+      ContactsAPI.remove(contact).then((json_response) => {
+         console.log("deleted last user", json_response)
+      })
    }
 
   render() {
     return (
-      <div>
-        <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts}/>
-      </div>
+         <div>
+            {this.state.screen === 'list' &&
+            <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts}/>
+
+            }
+            {this.state.screen === 'create' && (
+               <CreateContact/>
+            )}
+         </div>
     )
   }
 }
