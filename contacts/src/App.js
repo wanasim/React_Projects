@@ -6,7 +6,7 @@ import CreateContact from './CreateContact'
 // here we are passing the ListContacts Component a prop (aka argument) with contacts array
 class App extends Component {
    state = {
-      screen: 'create',
+      screen: 'list',
       contacts: []
    }
    componentDidMount(){
@@ -33,7 +33,8 @@ class App extends Component {
     return (
          <div>
             {this.state.screen === 'list' &&
-            <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts}/>
+            <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts} onNavigate={()=>{
+               this.setState({screen: 'create'})}}/>
 
             }
             {this.state.screen === 'create' && (
