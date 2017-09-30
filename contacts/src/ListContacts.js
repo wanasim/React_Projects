@@ -1,36 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
-
-// stateless functional component example:
-// function ListContacts(props){
-//    static propTypes = {
-//       contacts: PropTypes.array.isRe
-//    }
-//    return (
-//       <ol className = 'contact-list'>
-//          {props.contacts.map( contact =>
-//             <li key={contact.id} className= 'contact-list-item'>
-//                <div className='contact-avatar' style={{backgroundImage:`url(${contact.avatarURL})`}}>
-//                </div>
-//                <div className='contact-details'>
-//                   <p>{contact.name}</p>
-//                   <p>{contact.email}</p>
-//                </div>
-//                <button onClick={() => props.onDeleteContact(contact)} className='contact-remove'>
-//                Remove
-//                </button>
-//             </li>
-//          )}
-//       </ol>
-//    )
-// }
-//
-// ListContacts.propTypes = {
-//    contacts: PropTypes.array.isRequired,
-//    onDeleteContact: PropTypes.func.isRequired
-// }
 
 // traditional way of creating a React component
 class ListContacts extends React.Component {
@@ -85,7 +57,7 @@ class ListContacts extends React.Component {
                   value={query}
                   onChange={(event) => this.updateQuery(event)}
                />
-               <a href="#create" className= 'add-contact' onClick = {this.props.onNavigate}>Go to create Contacts</a>
+               <Link to="/create" className= 'add-contact' >Go to create Contacts</Link>
             </div>
 
 
@@ -117,4 +89,32 @@ class ListContacts extends React.Component {
    }
 }
 
+// stateless functional component example:
+// function ListContacts(props){
+//    static propTypes = {
+//       contacts: PropTypes.array.isRe
+//    }
+//    return (
+//       <ol className = 'contact-list'>
+//          {props.contacts.map( contact =>
+//             <li key={contact.id} className= 'contact-list-item'>
+//                <div className='contact-avatar' style={{backgroundImage:`url(${contact.avatarURL})`}}>
+//                </div>
+//                <div className='contact-details'>
+//                   <p>{contact.name}</p>
+//                   <p>{contact.email}</p>
+//                </div>
+//                <button onClick={() => props.onDeleteContact(contact)} className='contact-remove'>
+//                Remove
+//                </button>
+//             </li>
+//          )}
+//       </ol>
+//    )
+// }
+//
+// ListContacts.propTypes = {
+//    contacts: PropTypes.array.isRequired,
+//    onDeleteContact: PropTypes.func.isRequired
+// }
 export default ListContacts
