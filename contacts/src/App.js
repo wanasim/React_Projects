@@ -28,7 +28,7 @@ class App extends Component {
          console.log("deleted last user", json_response)
       })
    }
-
+ 
    createContact(contact) {
       ContactsAPI.create(contact).then(contact => {
          this.setState(state => ({
