@@ -28,7 +28,7 @@ class App extends Component {
          console.log("deleted last user", json_response)
       })
    }
- 
+
    createContact(contact) {
       ContactsAPI.create(contact).then(contact => {
          this.setState(state => ({
@@ -50,6 +50,7 @@ class App extends Component {
             <Route path='/create' render={ ({history}) =>
                <CreateContact onCreateContact={(contact) =>  {
                   this.createContact(contact)
+                  console.log("history", history)
                   history.push('/')
                }}/>
             }/>
