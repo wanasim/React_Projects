@@ -1,3 +1,5 @@
+// REDUCER
+
 import {
    ADD_RECIPE,
    REMOVE_FROM_CALENDAR
@@ -49,7 +51,8 @@ function calendar (state = initialCalendarState, action){
 
    switch(action.type){
       case 'ADD_RECIPE':
-         // ellipsis below is a spread operator.
+         // ellipsis below is an OBJECT spread operator.
+         //notice ...state below occurs twice because we are updating two levels --> meal and the day it corresponds with.
          return {
             ...state,
             [day] : {

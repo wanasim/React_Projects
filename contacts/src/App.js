@@ -13,6 +13,7 @@ class App extends Component {
       ContactsAPI.getAll().then((contacts) => {
          this.setState({contacts})
          // note that you can write the above as this.setState({contacts:contacts}) but if the key and value are the same then you can simplify it as such
+         console.log(process.env);;
       })
    }
 

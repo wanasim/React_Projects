@@ -11,6 +11,9 @@ import FoodList from './FoodList'
 import ShoppingList from './ShoppingList'
 
 class App extends Component {
+  constructor(){ //only need to have a constructor functions if you need to reference this.props for a initial state. 
+    super()
+  }
   state = {
     foodModalOpen: false,
     meal: null,
@@ -53,12 +56,15 @@ class App extends Component {
   closeIngredientsModal = () => this.setState(() => ({ ingredientsModalOpen: false }))
   generateShoppingList = () => {
     return this.props.calendar.reduce((result, { meals }) => {
+      console.log("meals", meals)
       const { breakfast, lunch, dinner } = meals
 
+      // console.log("TESTING", breakfast && result.push(breakfast))
       breakfast && result.push(breakfast)
       lunch && result.push(lunch)
       dinner && result.push(dinner)
 
+      console.log("result", result)
       return result
     }, [])
     .reduce((ings, { ingredientLines }) => ings.concat(ingredientLines), [])
@@ -68,6 +74,7 @@ class App extends Component {
     const { calendar, selectRecipe, remove } = this.props
     const mealOrder = ['breakfast', 'lunch', 'dinner']
 
+    console.log("this.props", this.props)
 
     return (
       <div className='container'>
@@ -172,7 +179,7 @@ function mapStateToProps ({ food, calendar }) {
 
   return {
     calendar: dayOrder.map((day) => ({
-      day,
+      day, //same as day: day since day is the property name and day is being passed as a paramter in the map function
       meals: Object.keys(calendar[day]).reduce((meals, meal) => {
         meals[meal] = calendar[day][meal]
           ? food[calendar[day][meal]]

@@ -8,7 +8,8 @@ import reducer from './reducers'
 import {Provider } from 'react-redux'
 // ^notice above import exports function calendar as default (so do some other imports). This allows us to import anything exported as default without any {}, as well as have a generic name. For example, we can give it a name of 'something' rather than reducer
 
-// custom logger below that can be passed as an argument to applyMiddleware:
+// custom 'logger' below that can be passed as an argument to applyMiddleware. Also, note that 'logger' is a curried function, so store returns another function called next which returns action
+//there should be a logger function that you can use via applyMiddleware
 const logger = store => next => action => {
    console.group(action.type)
    console.info('disptaching', action)
