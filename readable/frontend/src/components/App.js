@@ -1,64 +1,74 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-// import {Route} from 'react-router-dom';
-import {addPost, thunkAddPost} from '../actions'
+import {Route} from 'react-router-dom';
+
+import {getPosts, thunkAddPost} from '../actions'
 import logo from '../new-logo.png';
 import '../App.css';
-import {getPosts, getCategories} from '../utils/readableAPI.js'
+import NewPost from './NewPost.js'
+// import {getPosts, getCategories} from '../utils/readableAPI.js'
 
  class App extends Component {
    state = {
    }
 
    componentDidMount = () => {
-      getPosts()
-      getCategories()
-      console.log(process.env)
+     this.props.receivePosts()
+
    }
-
-   handleSubmit = (event) => {
-     event.preventDefault()
-     this.props.createPost()
-     console.log("just submitted something")
-   }
-
-
 
    render() {
-     const {createPost}= this.props
+     const {createPost, allPosts}= this.props
+     // console.log("PROPS", this.props)
 
+     //NOTE BELOW: {Link} from react router dom does not play with React-Redux for some reason. Hence using a tag. 
      return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
 
-        <form onSubmit={this.handleSubmit} className="create-contact-form">
-               <div className="create-contact-details">
-                  <input type="text" name="name" placeholder="Name"/>
-                  <input type="text" name="email" placeholder="Email"/>
-                  <button> Add Contact </button>
-               </div>
-            </form>
+          <Route exact path='/' render={()=>(
+            <div>
+              <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1 className="App-title">Project Readable</h1>
+              </header>
+
+
+              <p className="App-intro">
+                All Posts
+                {allPosts.map((post)=>(
+                  <li key={post.id}>{post.id}</li>
+                ))}
+              </p>
+
+              <a href='/addPost' value='LINK'>Create Post</a>
+
+            </div>
+          )}/>
+
+        <Route path='/addPost' render={({history})=>(
+            <NewPost createPost={(post)=>{
+              createPost(post)
+              history.push('/')
+            }}/>
+        )}/>
       </div>
     );
   }
 }
 
 
-// function mapStateToProps({data}){
-//   return {}
-// }
+function mapStateToProps({posts}){
+  return {
+    allPosts: posts.all_posts,
+  }
+}
 
 function mapDispatchToProps(dispatch){
   return {
-    createPost: () => dispatch(thunkAddPost())
+    createPost: (post) => dispatch(thunkAddPost(post)),
+    receivePosts: () => dispatch(getPosts())
 
   }
 }
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -3,3 +3,9 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+.create-form{
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+}

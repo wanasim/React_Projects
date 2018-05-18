@@ -174,15 +174,19 @@ class App extends Component {
   }
 }
 
-function mapStateToProps ({ food, calendar }) {
+//note that mapStateToProps passes the app's state by default! However, we can also pass an object that specifies particular state properties (aka reducers since the name of
+//of the reducer is used as the state property name). 
+//ALSO, you can optionally pass in an optional second paramater that includes the store's props. 
+function mapStateToProps (state) {
+  console.log("STATE INSIDE mapStateToProps function", state)
   const dayOrder = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
   return {
     calendar: dayOrder.map((day) => ({
-      day, //same as day: day since day is the property name and day is being passed as a paramter in the map function
-      meals: Object.keys(calendar[day]).reduce((meals, meal) => {
-        meals[meal] = calendar[day][meal]
-          ? food[calendar[day][meal]]
+      day, //same as day: day since day is the property name and day is being passed as a parameter in the map function
+      meals: Object.keys(state.calendar[day]).reduce((meals, meal) => {
+        meals[meal] = state.calendar[day][meal]
+          ? state.foodie[state.calendar[day][meal]]
           : null
 
         return meals

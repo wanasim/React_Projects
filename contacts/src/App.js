@@ -35,6 +35,7 @@ class App extends Component {
          this.setState(state => ({
             contacts: state.contacts.concat([contact])
          }))
+         console.log("CHECKING", this.state.contacts)
       })
    }
 

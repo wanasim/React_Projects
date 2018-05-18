@@ -73,7 +73,7 @@ function calendar (state = initialCalendarState, action){
    }
 }
 
-function food (state = {}, action) {
+function foodie (state = {}, action) {
   switch (action.type) {
     case ADD_RECIPE :
       const { recipe } = action
@@ -87,6 +87,6 @@ function food (state = {}, action) {
   }
 }
 export default combineReducers({
-   food,
+   foodie,
    calendar
 })
