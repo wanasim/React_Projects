@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import serializeForm from 'form-serialize'
+import '../index.css'
 
 class NewPost extends Component {
   state = {
@@ -27,7 +28,13 @@ class NewPost extends Component {
           Enter Post Title:  <input type="text" name="title" placeholder="Email"/><br/>
           Enter Post: <textarea name="body" placeholder="Post body" rows="10" cols="60"></textarea><br/>
           Author: <input type="text" name="author" placeholder="Name"/><br/>
-          Category: <input type="text" name="category" placeholder="Name"/><br/>
+          Category: <select name="category">
+          <option value="react">react</option>
+          <option value="redux">redux</option>
+          <option value="udacity">udacity</option>
+
+          </select>
+          <br/>
 
           <button>Add Post</button>
         </div>

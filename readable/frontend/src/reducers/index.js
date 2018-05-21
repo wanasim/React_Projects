@@ -1,18 +1,26 @@
 // REDUCERS
-import { ALL_POSTS, ADD_POST, ADD_COMMENT, DELETE_POST, DELETE_COMMENT } from '../actions'
+import { ALL_POSTS, CAT_POSTS, DET_POST, ALL_COMMENTS, ALL_CATEGORIES, ADD_POST, ADD_COMMENT, DELETE_POST, DELETE_COMMENT } from '../actions'
 import {combineReducers} from 'redux'
 
 
-const initialState = {
+const initialPostState = {
   all_posts: [],
-  new_posts: {},
-  deleted_posts: ["test"]
+  cat_posts: [],
+  detail_post: {},
+  deleted_posts: []
+}
+
+const initialCategoryState = {
+  all_categories: []
+}
+
+const initialCommentState = {
+  all_comments: []
 }
 
 //post reducer
-function posts (state = initialState, action) {
+function posts (state = initialPostState, action) {
   // const {id, timestamp,title, body, author, category, voteScore, deleted} = action
-  // console.log("Reduer picked up on action", action)
 
   switch(action.type){
     case ALL_POSTS:
@@ -35,13 +43,51 @@ function posts (state = initialState, action) {
         }])
 
       }
+    case CAT_POSTS:
+      return {
+        ...state,
+        cat_posts: action.all_posts
+      }
+    case DET_POST:
+    console.log("Reduer picked up on action", action)
+      return {
+        ...state,
+        detail_post: action.post
+
+      }
       default:
        return state;
 
   }
 }
 
+function comments(state=initialCommentState, action){
+  switch (action.type) {
+    case ALL_COMMENTS:
+      return {
+        ...state,
+        all_comments: action.all_comments
+      }
+    default:
+      return state
+
+  }
+}
+
+function categories(state=initialCategoryState, action){
+  switch (action.type){
+    case ALL_CATEGORIES:
+    console.log("REGISTERED CAT ACTION", action)
+    return {
+      ...state,
+      all_categories: action.all_categories
+    }
+    default:
+      return state;
+  }
+}
+
 // comment reducer
 // function comment()
 
-export default combineReducers({posts})
+export default combineReducers({posts, categories, comments})
