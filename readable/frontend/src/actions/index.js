@@ -1,6 +1,7 @@
 // ACTIONS
 export const ALL_POSTS = 'ALL_POSTS'
 export const ADD_POST = 'ADD_POST'
+export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const CAT_POSTS = 'CAT_POSTS'
 export const DET_POST = 'DET_POST'
@@ -29,6 +30,18 @@ export const detPost = (post) => ({
   post
 })
 
+export const deletedPost = (post) => ({
+  type: DELETE_POST,
+  post
+})
+
+export const editedPost = ({id, title, body}) => ({
+  type: EDIT_POST,
+  id,
+  title,
+  body
+})
+
 export const allCategories = (all_categories) =>({
   type: ALL_CATEGORIES,
   all_categories
@@ -45,6 +58,7 @@ export const addPost = ({id,timestamp,title,body,author,category,voteScore,delet
    voteScore,
    deleted
 })
+
 
 export const allComments = (all_comments) => ({
     type: ALL_COMMENTS,
@@ -64,6 +78,7 @@ export const addComment = ({id,parentId,timestamp,body,author,voteScore,deleted,
 })
 
 export function getPosts(){
+  console.log("HIT")
   return function(dispatch){
     fetch('http://localhost:3001/posts', { headers: {'Authorization': API_HEADER}})
     .then((response)=>{
@@ -73,6 +88,42 @@ export function getPosts(){
       dispatch(allPosts(postArr))
     })
 
+  }
+}
+
+export function editPost(id, body) {
+  console.log("EDIT", id)
+  return function(dispatch){
+    fetch(`http://localhost:3001/posts/${id}`, {
+      method: 'put',
+      body: JSON.stringify(body),
+      headers:{
+        'Authorization':API_HEADER,
+        'Accept': 'application/json',
+       'Content-Type': 'application/json',
+      }})
+    .then((response)=>{
+      console.log("RESPONSE", response)
+      return response.json()
+    })
+    .then((post)=>{
+      console.log("edited", post)
+      dispatch(editedPost(post))
+      dispatch(detPost(post))
+    })
+  }
+}
+
+export function deletePost(id) {
+  return function(dispatch){
+    fetch(`http://localhost:3001/posts/${id}`, {method: 'delete', headers:{'Authorization':API_HEADER}})
+    .then((response)=>response.json())
+    .then((post)=>{
+      console.log("DELETEEEDDD", post)
+      dispatch(deletedPost({id: post.id, title: post.title, body: post.body}))
+      dispatch(editPost)
+
+    })
   }
 }
 
@@ -100,12 +151,17 @@ export function getCatPosts(category){
 }
 
 export function getDetPost(id){
+  console.log("LOGGGED", id)
   return function(dispatch){
     fetch(`http://localhost:3001/posts/${id}`, {headers:{'Authorization' : API_HEADER}})
     .then((response)=> {
       return response.json()
     })
-    .then((post)=>dispatch(detPost(post)))
+    .then((post)=>{
+      console.log("REACHED", post)
+      dispatch(detPost(post))
+
+    })
   }
 }
 

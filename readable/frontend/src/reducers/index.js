@@ -1,5 +1,5 @@
 // REDUCERS
-import { ALL_POSTS, CAT_POSTS, DET_POST, ALL_COMMENTS, ALL_CATEGORIES, ADD_POST, ADD_COMMENT, DELETE_POST, DELETE_COMMENT } from '../actions'
+import { ALL_POSTS, CAT_POSTS, DET_POST, ALL_COMMENTS, ALL_CATEGORIES, ADD_POST, ADD_COMMENT, DELETE_POST, EDIT_POST, DELETE_COMMENT } from '../actions'
 import {combineReducers} from 'redux'
 
 
@@ -7,7 +7,6 @@ const initialPostState = {
   all_posts: [],
   cat_posts: [],
   detail_post: {},
-  deleted_posts: []
 }
 
 const initialCategoryState = {
@@ -27,6 +26,11 @@ function posts (state = initialPostState, action) {
       return {
         ...state,
         all_posts: action.all_posts
+      }
+    case DELETE_POST:
+      return {
+        ...state,
+        all_posts: state.all_posts.filter(post=>post.id!==action.post.id)
       }
     case ADD_POST:
       return {
@@ -48,6 +52,21 @@ function posts (state = initialPostState, action) {
         ...state,
         cat_posts: action.all_posts
       }
+    case EDIT_POST:
+      return {
+        ...state,
+        all_posts: state.all_posts.map((post)=>{
+          if(post.id===action.id){
+            return {
+              ...post,
+              title: action.title,
+              body: action.body
+            }
+          }
+          return post
+        })
+      }
+
     case DET_POST:
     console.log("Reduer picked up on action", action)
       return {
