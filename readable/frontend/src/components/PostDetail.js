@@ -3,12 +3,21 @@ import {withRouter, Route, Link} from 'react-router-dom'
 import Modal from 'react-modal'
 import {connect} from 'react-redux'
 import serializeForm from 'form-serialize'
-import {getDetPost, getComments, deletePost, editPost} from '../actions'
+import {getDetPost, getComments, deletePost, editPost, submitComment, delComment, editComment, votePost, voteComment} from '../actions'
 import '../App.css'
+import Button from '@material-ui/core/Button'
+import ThumbUpIcon from 'material-ui-icons/ThumbUp';
+import ThumbDownIcon from 'material-ui-icons/ThumbDown';
+
+
 
 class PostDetail extends Component {
   state = {
     openEdit: false,
+    openAddComment:false,
+    openEditComment:false,
+    commentId: null,
+    commentBody: null,
     formInput: {}
   }
 
@@ -20,23 +29,65 @@ class PostDetail extends Component {
   openEditModal = () => this.setState({openEdit:true})
   closeEditModal = () =>this.setState({openEdit:false})
 
+  openCommentModal = () => this.setState({openAddComment:true})
+  closeCommentModal = () => this.setState({openAddComment:false})
+
+  openEdCommentModal = (commentId, commentBody) => {
+    console.log("commentId", commentId)
+    this.setState({commentId, commentBody, openEditComment:true})
+    // this.setState({openEditComment:true})
+
+  }
+  closedEdCommentModal = () => this.setState({openEditComment:false})
+
+  confirmComment = (e) => {
+    e.preventDefault()
+    const formInput = serializeForm(e.target, {hash:true})
+    formInput.parentId = this.props.match.params.id
+    formInput.timestamp = Date.now()
+
+    this.setState({formInput}, ()=>{
+      this.props.submitComment(formInput)
+      this.closeCommentModal()
+
+    })
+  }
+
   confirmDelete = (history) => {
     this.props.deletePost(this.props.match.params.id)
     history.push('/')
+  }
+
+  confirmEditComment = (e) => {
+    e.preventDefault()
+    const formInput = serializeForm(e.target, {hash:true})
+    formInput.timestamp = Date.now()
+    formInput.id = this.state.commentId
+    console.log("formInput", formInput)
+    this.setState({formInput}, ()=>{
+      this.props.edComment(this.state.commentId, this.state.formInput)
+
+    })
+    this.closedEdCommentModal()
+  }
+
+  confirmCommentDelete = (id) => {
+    this.props.deleteComment(id)
   }
   confirmEdit = (e) => {
     e.preventDefault()
     const formInput = serializeForm(e.target, {hash:true})
 
     this.setState({formInput},()=>{
-      this.props.editPost(this.props.match.params.id, formInput)
+      this.props.editPost(this.props.match.params.id, this.state.formInput)
 
     })
+    this.closeEditModal()
   }
 
   render(){
-    const {post, comments} = this.props
-
+    const {post, comments, votePost, voteComment} = this.props
+    console.log("comments", comments)
     return (
       <div>
         {!post.id
@@ -50,7 +101,7 @@ class PostDetail extends Component {
           <Link to="/">Home</Link>
 
           <h3>Post</h3>
-          {post.title}
+          {post.title}{post.voteScore}
           <Route render={({history})=>(
             <button onClick={()=>{
               this.confirmDelete(history)
@@ -58,14 +109,31 @@ class PostDetail extends Component {
           )}>
           </Route>
           <button onClick={this.openEditModal}>Edit</button>
+          <ThumbUpIcon onClick={()=>votePost(post.id, {option:"upVote"})} className="thumb_up">lll</ThumbUpIcon>
+          <ThumbDownIcon onClick={()=>votePost(post.id, {option:"downVote"})} className="thumb_down">lll</ThumbDownIcon>
+
 
           <br/>
           <h3>Comments</h3>
+          <button onClick={this.openCommentModal}>Add Comment</button>
           {comments.length === 0 ? 'No Comments here!' :comments.map((comment)=>(
-            <li key={comment.id}>{comment.body}</li>
+
+              <li key={comment.id}>{comment.body}{comment.voteScore}
+                <button onClick={()=>{
+                  this.confirmCommentDelete(comment.id)
+                }}>Delete</button>
+
+                <button onClick={()=>{
+                  this.openEdCommentModal(comment.id, comment.body)
+                }}>Edit</button>
+                <ThumbUpIcon onClick={()=>voteComment(comment.id, {option:"upVote"})} className="thumb_up">lll</ThumbUpIcon>
+                <ThumbDownIcon onClick={()=>voteComment(comment.id, {option:"downVote"})} className="thumb_down">lll</ThumbDownIcon>
+              </li>
+
           ))}
         </div>
         }
+
 
         <Modal
         className='modal'
@@ -80,6 +148,44 @@ class PostDetail extends Component {
               Enter Post: <textarea name="body" defaultValue={post.body} rows="10" cols="60"></textarea><br/>
 
               <button>confirm</button>
+            </div>
+          </form>
+        </Modal>
+
+
+        <Modal
+        className='modal'
+        overlayClassName='overlay'
+        isOpen={this.state.openAddComment}
+        onRequestClose={this.closeCommentModal}
+        contentLabel='Modal'
+        ariaHideApp={false}>
+          <form onSubmit={this.confirmComment} className="create-form">
+            <div className="create-contact-details">
+              Enter a unique ID: <input type="text" name="id" placeholder="Name"/><br/>
+              Enter Comment: <textarea name="body" placeholder="Comment body" rows="10" cols="60"></textarea><br/>
+              Author: <input type="text" name="author" placeholder="Name"/><br/>
+
+
+
+
+              <button>Submit</button>
+            </div>
+          </form>
+        </Modal>
+
+        <Modal
+        className='modal'
+        overlayClassName='overlay'
+        isOpen={this.state.openEditComment}
+        onRequestClose={this.closedEdCommentModal}
+        contentLabel='Modal'
+        ariaHideApp={false}>
+          <form onSubmit={this.confirmEditComment} className="create-form">
+            <div className="create-contact-details">
+              Enter Comment: <textarea name="body" defaultValue={this.state.commentBody} rows="10" cols="60"></textarea><br/>
+
+              <button>Submit</button>
             </div>
           </form>
         </Modal>
@@ -101,7 +207,12 @@ function mapDispatchToProps(dispatch){
     getDetPost: (id) => dispatch(getDetPost(id)),
     getComments: (id) => dispatch(getComments(id)),
     deletePost: (id) => dispatch(deletePost(id)),
-    editPost: (id, body) => dispatch(editPost(id,body))
+    editPost: (id, body) => dispatch(editPost(id,body)),
+    submitComment: (body) => dispatch(submitComment(body)),
+    deleteComment: (id) => dispatch(delComment(id)),
+    edComment: (id, body) => dispatch(editComment(id, body)),
+    votePost: (id,vote) => dispatch(votePost(id, vote)),
+    voteComment: (id, vote) => dispatch(voteComment(id, vote))
   }
 }
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getCatPosts} from '../actions'
-import {withRouter} from 'react-router-dom'
+import {withRouter, Link} from 'react-router-dom'
 
 class CategoryPosts extends Component {
 state = {
@@ -17,9 +17,17 @@ state = {
      const {posts} = this.props
       return(
         <div>
-          {posts === undefined ? 'No posts under that category!' : posts.map((post)=>(
-            <li key={post.id}>{post.id}</li>
-          ))}
+          <div>
+            <Link to="/">Home</Link>
+          </div>
+
+
+            {posts === undefined ? 'No posts under that category!' : posts.map((post)=>(
+              <li key={post.id}>
+              <Link to={`/posts/${post.id}`}>{post.title}</Link>
+              </li>
+            ))}
+
         </div>
       )
    }

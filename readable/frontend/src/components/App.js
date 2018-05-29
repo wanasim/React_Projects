@@ -9,11 +9,13 @@ import '../App.css';
 import NewPost from './NewPost.js'
 import CategoryPosts from './CategoryPosts'
 import PostDetail from './PostDetail'
+import Select from 'react-select'
 // import {getPosts, getCategories} from '../utils/readableAPI.js'
 
  class App extends Component {
    state = {
-     postModalOpen:false
+     postModalOpen:false,
+     sortOption: "votescore"
    }
 
    componentDidMount = () => {
@@ -22,14 +24,21 @@ import PostDetail from './PostDetail'
 
    }
 
+
+
    openPostModal = () => this.setState({postModalOpen:true})
    closePostModal = () =>this.setState({postModalOpen:false})
    renderCategory = () => console.log("CLICKED")
 
+   handleSort = (e) => {
+     this.setState({sortOption:e.target.value})
+   }
+
    render() {
      const {createPost, allPosts, allCategories, receiveCatPosts}= this.props
+     const {sortOption} = this.state
 
-     // console.log("PROPS", this.props)
+     console.log("state posts", this.state)
 
      //NOTE BELOW: {Link} from react router dom does not play with React-Redux for some reason. Hence using a tag.
      return (
@@ -43,11 +52,16 @@ import PostDetail from './PostDetail'
             <div>
 
               <div className="App-intro">
+              <select defaultValue={sortOption} onChange={this.handleSort}>
+                <option value="timestamp">timestamp</option>
+                <option value="votescore">votescore</option>
+              </select>
+              <br/>
               <h3>Categories</h3>
                 {allCategories.map((cat)=>[
                   <li key={allCategories.indexOf(cat)}>
                     <Link className="link" to={{
-                      pathname: `/${cat.name}/post`,
+                      pathname: `/${cat.name}`,
                     }}>
                     {cat.name}</Link>
                   </li>,
@@ -57,11 +71,22 @@ import PostDetail from './PostDetail'
               <br/>
 
               <h3>Posts</h3>
-                {allPosts.map((post)=>(
-                  <li key={post.id}>
-                    <Link to={`/posts/${post.id}`}>{post.title}</Link>
-                  </li>
-                ))}
+                {this.state.sortOption === 'votescore' ? (
+                  allPosts.sort((post1,post2) => post1.voteScore - post2.voteScore)
+                  .map((post)=>(
+                    <li key={post.id}>
+                      <Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
+                    </li>
+                  ))
+                ) : (
+                  allPosts.sort((post1,post2) => post1.timestamp - post2.timestamp)
+                  .map((post)=>(
+                    <li key={post.id}>
+                    <Link to={`/${post.category}/${post.id}`}>{post.title}</Link>
+                    </li>
+                  ))
+
+                )}
               </div>
 
               <br/>
@@ -79,11 +104,11 @@ import PostDetail from './PostDetail'
             contentLabel='Modal'
             ariaHideApp={false}
           >
-            <NewPost createPost={createPost}/>
+            <NewPost createPost={createPost} closePostModal={this.closePostModal}/>
           </Modal>
 
-          <Route path='/:category/post' component={CategoryPosts} />
-          <Route path='/posts/:id' component={PostDetail}/>
+          <Route exact path='/:category' component={CategoryPosts} />
+          <Route path='/:category/:id' component={PostDetail}/>
 
       </div>
     );

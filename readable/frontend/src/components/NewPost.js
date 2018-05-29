@@ -14,6 +14,7 @@ class NewPost extends Component {
     this.setState({formInput},()=>{
       // console.log("formInput State",this.state.formInput)
       this.props.createPost(this.state.formInput)
+      this.props.closePostModal()
 
     })
 
