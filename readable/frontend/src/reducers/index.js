@@ -49,7 +49,16 @@ function posts (state = initialPostState, action) {
     case VOTE_POST:
       return {
         ...state,
-        detail_post:action.post
+        detail_post:action.post,
+        all_posts:state.all_posts.map(post=>{
+          if(post.id===action.post.id){
+            return{
+              ...post,
+              voteScore: action.post.voteScore
+            }
+          }
+          return post
+        })
       }
 
     case CAT_POSTS:

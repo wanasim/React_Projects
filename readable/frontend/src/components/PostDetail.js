@@ -8,7 +8,9 @@ import '../App.css'
 import Button from '@material-ui/core/Button'
 import ThumbUpIcon from 'material-ui-icons/ThumbUp';
 import ThumbDownIcon from 'material-ui-icons/ThumbDown';
-
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 
 class PostDetail extends Component {
@@ -101,34 +103,74 @@ class PostDetail extends Component {
           <Link to="/">Home</Link>
 
           <h3>Post</h3>
-          {post.title}{post.voteScore}
-          <Route render={({history})=>(
-            <button onClick={()=>{
-              this.confirmDelete(history)
-            }}>Delete</button>
-          )}>
-          </Route>
-          <button onClick={this.openEditModal}>Edit</button>
-          <ThumbUpIcon onClick={()=>votePost(post.id, {option:"upVote"})} className="thumb_up">lll</ThumbUpIcon>
-          <ThumbDownIcon onClick={()=>votePost(post.id, {option:"downVote"})} className="thumb_down">lll</ThumbDownIcon>
+          {console.log(Date(1468166872634))}
+          <Card key={post.id}>
+
+            <CardContent>
+              <Typography gutterBottom variant="headline" component="h3">
+                {post.title}
+              </Typography>
+              <Typography  color="textSecondary">
+                Author: {post.author}  ||  TimeStamp: {Date(post.timestamp)}
+              </Typography>
+              <Typography  color="textSecondary">
+                Number of Comments: {post.commentCount}  ||  Votescore: {post.voteScore}
+              </Typography>
+              <Typography >
+                {post.body}
+              </Typography>
+              <Button size="small" color="primary">
+                <ThumbUpIcon onClick={()=>votePost(post.id, {option:"upVote"})} className="thumb_up">lll</ThumbUpIcon>
+              </Button>
+              <Button size="small" color="primary">
+                <ThumbDownIcon onClick={()=>votePost(post.id, {option:"downVote"})} className="thumb_down">lll</ThumbDownIcon>
+              </Button>
+              <Route render={({history})=>(
+                <Button onClick={()=>{
+                  this.confirmDelete(history)
+                }}>Delete</Button>
+              )}>
+              </Route>
+              <Button onClick={this.openEditModal}>Edit</Button>
+            </CardContent>
+
+          </Card>
+
+
 
 
           <br/>
           <h3>Comments</h3>
           <button onClick={this.openCommentModal}>Add Comment</button>
           {comments.length === 0 ? 'No Comments here!' :comments.map((comment)=>(
-
-              <li key={comment.id}>{comment.body}{comment.voteScore}
-                <button onClick={()=>{
-                  this.confirmCommentDelete(comment.id)
-                }}>Delete</button>
-
-                <button onClick={()=>{
-                  this.openEdCommentModal(comment.id, comment.body)
-                }}>Edit</button>
+          <Card key={comment.id}>
+            <CardContent>
+              <Typography  color="textSecondary">
+                Author: {comment.author}  ||  TimeStamp: {Date(comment.timestamp)}
+              </Typography>
+              <Typography  color="textSecondary">
+                Votescore: {comment.voteScore}
+              </Typography>
+              <Typography >
+                {comment.body}
+              </Typography>
+              <Button size="small" color="primary">
                 <ThumbUpIcon onClick={()=>voteComment(comment.id, {option:"upVote"})} className="thumb_up">lll</ThumbUpIcon>
+              </Button>
+              <Button size="small" color="primary">
                 <ThumbDownIcon onClick={()=>voteComment(comment.id, {option:"downVote"})} className="thumb_down">lll</ThumbDownIcon>
-              </li>
+              </Button>
+              <Button onClick={()=>{
+                this.confirmCommentDelete(comment.id)
+              }}>Delete</Button>
+
+              <Button onClick={()=>{
+                this.openEdCommentModal(comment.id, comment.body)
+              }}>Edit</Button>
+
+            </CardContent>
+          </Card>
+
 
           ))}
         </div>
