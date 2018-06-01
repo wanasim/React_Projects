@@ -101,7 +101,7 @@ export const deleteComment = (comment) => {
 }
 
 export function getPosts(){
-  console.log("HIT")
+
   return function(dispatch){
     fetch('http://localhost:3001/posts', { headers: {'Authorization': API_HEADER}})
     .then((response)=>{
@@ -115,7 +115,7 @@ export function getPosts(){
 }
 
 export function editPost(id, body) {
-  console.log("EDIT", id)
+
   return function(dispatch){
     fetch(`http://localhost:3001/posts/${id}`, {
       method: 'put',
@@ -126,11 +126,11 @@ export function editPost(id, body) {
        'Content-Type': 'application/json',
       }})
     .then((response)=>{
-      console.log("RESPONSE", response)
+
       return response.json()
     })
     .then((post)=>{
-      console.log("edited", post)
+  
       dispatch(editedPost(post))
       dispatch(detPost(post))
     })
@@ -142,7 +142,6 @@ export function deletePost(id) {
     fetch(`http://localhost:3001/posts/${id}`, {method: 'delete', headers:{'Authorization':API_HEADER}})
     .then((response)=>response.json())
     .then((post)=>{
-      console.log("DELETEEEDDD", post)
       dispatch(deletedPost({id: post.id, title: post.title, body: post.body}))
       dispatch(editPost)
 
@@ -170,18 +169,15 @@ export function getCategories(){
     fetch('http://localhost:3001/categories', {headers:{'Authorization': API_HEADER}})
     .then((response)=> response.json())
     .then((categories)=>{
-      console.log("CATEGORIES", categories)
       dispatch(allCategories(categories.categories))
     })
   }
 }
 
 export function getCatPosts(category){
-  console.log("TEST")
   return function(dispatch){
     fetch(`http://localhost:3001/${category}/posts`, {headers:{'Authorization': API_HEADER}})
     .then((response) => {
-      console.log("RESPONSE", response)
       return response.json()
     })
     .then((posts)=>dispatch(catPosts(posts)))
@@ -189,14 +185,12 @@ export function getCatPosts(category){
 }
 
 export function getDetPost(id){
-  console.log("LOGGGED", id)
   return function(dispatch){
     fetch(`http://localhost:3001/posts/${id}`, {headers:{'Authorization' : API_HEADER}})
     .then((response)=> {
       return response.json()
     })
     .then((post)=>{
-      console.log("REACHED", post)
       dispatch(detPost(post))
 
     })
@@ -204,7 +198,6 @@ export function getDetPost(id){
 }
 
 export function submitComment(body){
-  console.log("COMMENTED SUBMITTED", body)
   return function(dispatch){
     fetch('http://localhost:3001/comments', {
       method:'post',
@@ -217,7 +210,6 @@ export function submitComment(body){
     })
     .then((response)=>response.json())
     .then((comment)=>{
-      console.log("ADDED COMMENT", comment)
       dispatch(addComment(comment))
 
     })
@@ -242,7 +234,7 @@ export function thunkAddPost(newPost){
       return response.json()
     })
     .then((response)=>{
-      console.log("RESPONSE", response)
+
       dispatch(addPost(response))
       return response
     })
@@ -265,14 +257,14 @@ export function delComment(id){
     })
     .then((response)=>response.json())
     .then((comment)=>{
-      console.log("DELETED COMMENT", comment)
+
       dispatch(deleteComment(comment))
     })
   }
 }
 
 export function voteComment(id, vote){
-  console.log("SDF")
+
   return function(dispatch){
     fetch(`http://localhost:3001/comments/${id}`, {
       method: 'post',
@@ -299,7 +291,7 @@ export function editComment(id, body){
     })
     .then((response)=>response.json())
     .then((comment)=>{
-      console.log("EDITED COMMENT", comment)
+
       dispatch(editedComment(comment))
     })
 

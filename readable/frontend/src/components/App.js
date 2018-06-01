@@ -9,10 +9,7 @@ import '../App.css';
 import NewPost from './NewPost.js'
 import CategoryPosts from './CategoryPosts'
 import PostDetail from './PostDetail'
-import Select from 'react-select'
-// import {getPosts, getCategories} from '../utils/readableAPI.js'
-import ThumbUpIcon from 'material-ui-icons/ThumbUp';
-import ThumbDownIcon from 'material-ui-icons/ThumbDown';
+
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -45,17 +42,16 @@ import Typography from '@material-ui/core/Typography';
    }
    openPostModal = () => this.setState({postModalOpen:true})
    closePostModal = () =>this.setState({postModalOpen:false})
-   renderCategory = () => console.log("CLICKED")
+
 
    handleSort = (e) => {
      this.setState({sortOption:e.target.value})
    }
 
    render() {
-     const {createPost, allPosts, allCategories, receiveCatPosts}= this.props
+     const {createPost, allPosts, allCategories}= this.props
      const {sortOption} = this.state
 
-     console.log("state posts", this.state)
 
      //NOTE BELOW: {Link} from react router dom does not play with React-Redux for some reason. Hence using a tag.
      return (

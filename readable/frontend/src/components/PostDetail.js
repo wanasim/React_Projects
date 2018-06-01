@@ -11,7 +11,7 @@ import ThumbDownIcon from 'material-ui-icons/ThumbDown';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-   
+
 
 class PostDetail extends Component {
   state = {
@@ -35,7 +35,7 @@ class PostDetail extends Component {
   closeCommentModal = () => this.setState({openAddComment:false})
 
   openEdCommentModal = (commentId, commentBody) => {
-    console.log("commentId", commentId)
+
     this.setState({commentId, commentBody, openEditComment:true})
     // this.setState({openEditComment:true})
 
@@ -65,7 +65,6 @@ class PostDetail extends Component {
     const formInput = serializeForm(e.target, {hash:true})
     formInput.timestamp = Date.now()
     formInput.id = this.state.commentId
-    console.log("formInput", formInput)
     this.setState({formInput}, ()=>{
       this.props.edComment(this.state.commentId, this.state.formInput)
 
@@ -89,7 +88,6 @@ class PostDetail extends Component {
 
   render(){
     const {post, comments, votePost, voteComment} = this.props
-    console.log("comments", comments)
     return (
       <div>
         {!post.id
@@ -103,7 +101,6 @@ class PostDetail extends Component {
           <Link to="/">Home</Link>
 
           <h3>Post</h3>
-          {console.log(Date(1468166872634))}
           <Card key={post.id}>
 
             <CardContent>
@@ -237,7 +234,6 @@ class PostDetail extends Component {
 }
 
 function mapStateToProps({posts, comments}){
-  console.log("posts", posts)
   return {
     post: posts.detail_post,
     comments: comments.all_comments

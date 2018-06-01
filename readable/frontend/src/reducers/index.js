@@ -82,7 +82,7 @@ function posts (state = initialPostState, action) {
         })
       }
     case DET_POST:
-    console.log("Reduer picked up on action", action)
+
       return {
         ...state,
         detail_post: action.post
@@ -116,7 +116,7 @@ function comments(state=initialCommentState, action){
           }])
         }
     case VOTE_COMMENT:
-    console.log("REDUCER COME VOTE")
+
       return {
         ...state,
         all_comments: state.all_comments.map(comment=>{
@@ -131,7 +131,7 @@ function comments(state=initialCommentState, action){
 
       }
     case EDIT_COMMENT:
-    console.log("EDIT REDUCER COMMENT", action)
+
       return {
         ...state,
         all_comments: state.all_comments.map((comment)=>{
@@ -158,7 +158,7 @@ function comments(state=initialCommentState, action){
 function categories(state=initialCategoryState, action){
   switch (action.type){
     case ALL_CATEGORIES:
-      console.log("REGISTERED CAT ACTION", action)
+    
       return {
         ...state,
         all_categories: action.all_categories
