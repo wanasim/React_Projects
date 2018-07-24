@@ -1,0 +1,16 @@
+{
+	"expo": {
+		"name": "UdaciCards",
+		"sdkVersion": "27.0.0",
+		"icon": "./qr_code.png",
+		"description": "An app where you can create flashcards!",
+		"version": "1.0.1",
+		"orientation": "portrait",
+		"ios": {
+			"bundleIdentifier": "com.wnasim.udacicards"
+		},
+		"android": {
+			"package": "com.<your name or company name>.<your app name>"
+		}
+	}
+}
