@@ -14,7 +14,7 @@ export default class addCard extends Component {
 
   submitCard = () => {
     const {id, addCard} = this.props.navigation.state.params
-    console.log(typeof addCard)
+
     const {question, answer} = this.state
     const card = {
       question,

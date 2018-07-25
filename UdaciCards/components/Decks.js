@@ -36,7 +36,6 @@ function mapStateToProps({all_decks}){
   return {
     all_decks
   }
-
 }
 
 function mapDispatchToProps(dispatch){

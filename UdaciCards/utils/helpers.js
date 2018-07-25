@@ -4,17 +4,13 @@ import React from 'react'
 import {AsyncStorage} from 'react-native'
 import { Notifications, Permissions } from 'expo'
 
-const NOTIFICATION_KEY = 'UdaciCards:notifications'
+const NOTIFICATION_KEY = 'notificationkey'
 
-export function clearLocalNotification () {
-  return AsyncStorage.removeItem(NOTIFICATION_KEY)
-    .then(Notifications.cancelAllScheduledNotificationsAsync)
-}
 
 function createNotification () {
   return {
-    title: 'Log your stats!',
-    body: "👋 don't forget to log your stats for today!",
+    title: 'Study Time!',
+    body: "👋 Don't forget to study for your quiz!!",
     ios: {
       sound: true,
     },

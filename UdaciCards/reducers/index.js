@@ -26,8 +26,6 @@ function decks (state = initialState, action) {
       }
     }
     case NEW_CARD:
-      // console.log("HIT new card", state.all_decks[action.title].questions, action.card)
-      // console.log("NEW LINE", action.card)
       return {
         ...state,
         all_decks: {

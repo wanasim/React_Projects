@@ -15,10 +15,10 @@ import Quiz from './components/Quiz'
 import {setLocalNotification} from './utils/helpers'
 
 
-function UdaciStatusBar({backgroundColor, ...props}){
+function UdaciStatusBar({backgroundColor}){
   return (
-    <View style={{backgroundColor}}>
-      <StatusBar barStyle="light-content" translucent backgroundColor={backgroundColor} {...props} />
+    <View style={{backgroundColor, height:Constants.statusBarHeight}}>
+      <StatusBar barStyle="light-content" backgroundColor={backgroundColor}  />
     </View>
   )
 }
@@ -64,25 +64,11 @@ const MainNavigator = createStackNavigator({
     screen: addCard,
   },
   Quiz: {
-    screen: Quiz,
-
-  }
-}, {
-  tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? 'purple' : 'orange',
-    style: {
-      height: 56,
-      backgroundColor: Platform.OS === 'ios' ? 'orange' : 'purple',
-      shadowColor: 'rgba(0, 0, 0, 0.24)',
-      shadowOffset: {
-        width: 0,
-        height: 3
-      },
-      shadowRadius: 6,
-      shadowOpacity: 1
-    }
+    screen: Quiz
   }
 })
+
+
 export default class App extends React.Component {
 
   componentDidMount() {
@@ -93,7 +79,7 @@ export default class App extends React.Component {
     return (
       <Provider store={createStore(reducer)}>
         <View style={styles.container} >
-          <UdaciStatusBar backgroundColor='black'/>
+          <UdaciStatusBar backgroundColor='red'/>
           <MainNavigator/>
         </View>
       </Provider>

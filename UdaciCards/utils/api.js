@@ -1,7 +1,7 @@
 import React from 'react'
 import {AsyncStorage} from 'react-native'
 
-const STORAGE_KEY = 'milk'
+const STORAGE_KEY = 'notificationskey'
 
 // getDecks: return all of the decks along with their titles, questions, and answers.
 // getDeck: take in a single id argument and return the deck associated with that id.
@@ -41,7 +41,6 @@ export function initialDeck(){
 export function loadDecks(){
    return AsyncStorage.getItem(STORAGE_KEY).then((results)=>{
     if(!results){
-      // console.log("NO initialDeck")
       return initialDeck()
     }
     return JSON.parse(results)
