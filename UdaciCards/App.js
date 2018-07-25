@@ -17,8 +17,8 @@ import {setLocalNotification} from './utils/helpers'
 
 function UdaciStatusBar({backgroundColor, ...props}){
   return (
-    <View style={{backgroundColor, height: Constants.statusBarHeight}}>
-      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    <View style={{backgroundColor}}>
+      <StatusBar barStyle="light-content" translucent backgroundColor={backgroundColor} {...props} />
     </View>
   )
 }
@@ -42,26 +42,45 @@ const Tabs = createBottomTabNavigator({
 
 const MainNavigator = createStackNavigator({
   Home: {
-    screen: Tabs
+    screen: Tabs,
+    navigationOptions: {
+      title: 'UdaciCards',
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: 'black',
+      }
+    }
   },
   DeckInfo: {
     screen: DeckInfo,
-    navigationDetails: {
-
+    navigationOptions: {
+    headerTintColor: 'white',
+    headerStyle: {
+      backgroundColor: 'black',
     }
+  }
   },
   addCard: {
     screen: addCard,
-    navigationDetails: {
-
-    }
   },
   Quiz: {
     screen: Quiz,
-    navigationDetails: {
 
-    },
-
+  }
+}, {
+  tabBarOptions: {
+    activeTintColor: Platform.OS === 'ios' ? 'purple' : 'orange',
+    style: {
+      height: 56,
+      backgroundColor: Platform.OS === 'ios' ? 'orange' : 'purple',
+      shadowColor: 'rgba(0, 0, 0, 0.24)',
+      shadowOffset: {
+        width: 0,
+        height: 3
+      },
+      shadowRadius: 6,
+      shadowOpacity: 1
+    }
   }
 })
 export default class App extends React.Component {
@@ -73,8 +92,8 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
-        <View style={styles.container}>
-          <UdaciStatusBar backgroundColor='#b71845'/>
+        <View style={styles.container} >
+          <UdaciStatusBar backgroundColor='black'/>
           <MainNavigator/>
         </View>
       </Provider>

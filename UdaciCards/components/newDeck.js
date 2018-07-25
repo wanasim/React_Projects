@@ -1,8 +1,9 @@
 import React, {Component} from 'React'
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import {connect} from 'react-redux'
 import {addDeckTitle} from '../utils/api'
 import {addingDeck, newCard} from '../actions'
+import {Button} from 'react-native-elements'
 
 class newDeck extends Component {
 
